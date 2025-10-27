@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { publicApi } from "./Api";
 import { PostsError } from "./ErrorComponent";
 import { TopHeadlinesLoader } from "./LoadingComponent";
+import { useSharedData } from '../context/SharedDataContext';
 const BackEndUrl = import.meta.env.VITE_BACKEND_URL;
 const FrontEndUrl = import.meta.env.VITE_FRONTEND_URL;
 
@@ -10,6 +11,7 @@ const TopHeadlines = () => {
     const [topHeadlines, setTopHeadlines] = useState([]);
     const [fetchingTopHeadlines, setFetchingTopHeadlines] = useState(false);
     const [topHeadlinesError, setTopHeadlinesError] = useState('');
+    const { setSharedData } = useSharedData();
 
     const fetchTopHeadlines = async () => {
         setFetchingTopHeadlines(true)
@@ -17,9 +19,8 @@ const TopHeadlines = () => {
 
         try {
             const res = await publicApi.get(`${BackEndUrl}/api/posts/top-headlines`)
-            console.log('Posts ', res.data.posts)
-            console.log((`${BackEndUrl}/api/posts/top-headlines`))
             setTopHeadlines(res.data.posts)
+            setSharedData(res.data.posts);
         } catch (error) {
             console.log('error: ', error)
             setTopHeadlinesError('Failed to fetch top Headlines, please try again.')

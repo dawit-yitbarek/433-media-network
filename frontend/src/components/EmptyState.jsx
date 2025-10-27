@@ -1,11 +1,9 @@
+import { CircleOff } from 'lucide-react';
+
 export const EmptyMatchTable = ({ selectedDate, matchDateDisplay }) => {
     return (
         <div className="text-center py-20">
-            <img
-                src="https://cdn-icons-png.flaticon.com/512/4379/4379523.png"
-                alt="No Matches"
-                className="w-24 h-24 mx-auto opacity-70 mb-4"
-            />
+            <CircleOff className="mx-auto mb-4 text-[#A5A9B8]" size={60} />
             <h2 className="text-2xl font-bold text-white mb-2">
                 No Matches Found
             </h2>

@@ -1,9 +1,3 @@
-// import axios from 'axios';
-// import fs from 'fs';
-// import dotenv from 'dotenv';
-// const sampleMatches = JSON.parse(fs.readFileSync('./response.json', 'utf-8'));
-// dotenv.config();
-
 import axios from "axios";
 import dotenv from "dotenv";
 dotenv.config();
@@ -22,8 +16,6 @@ export async function getMatches(req, res) {
     if (selectedDate !== today) {
       url += `&dateFrom=${selectedDate}&dateTo=${nextDay}`;
     }
-
-    console.log('Api url', url)
 
     const { data } = await axios.get(url, {
       headers: {

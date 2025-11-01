@@ -84,6 +84,7 @@ const GamesCard = ({setFeaturedGames, setLoading, setError}) => {
             <img
               src={game?.image_url}
               alt={game?.title}
+              loading="lazy"
               className="w-full h-48 object-cover"
             />
             <div className="p-5">

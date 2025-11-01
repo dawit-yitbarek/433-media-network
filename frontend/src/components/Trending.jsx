@@ -1,41 +1,58 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { publicApi } from "./Api";
+import PostCard from "./PostCard";
+import { TrendingPost, TrendingFilms, TrendingGames } from "./TrendingCard";
+import { Star } from "lucide-react";
+import { PostsLoading } from "./LoadingComponent";
+import { PostsError } from "./ErrorComponent";
 
 const Trending = () => {
-    const [active, setActive] = useState("Sports");
+    const [trendingData, setTrendingData] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [active, setActive] = useState("Sport");
+    const [refresh, setRefresh] = useState(0);
+    const BackEndUrl = import.meta.env.VITE_BACKEND_URL;
 
-    const sections = ["Sports", "Forex", "Crypto", "Films", "Music", "News", "Games"];
-    const trendingData = {
-        Sports: [
-            { title: "Liverpool 3–1 Chelsea", desc: "Premier League Highlights", img: "images/sports1.jpg" },
-            { title: "Real Madrid tops La Liga", desc: "Matchday 8 Summary", img: "images/sports2.jpeg" },
-            { title: "ባርሳ ለኤልክላሲኮ ግጥሚያ ይህን ማልያ እንደሚጠቀሙ ይፋ ተደርጓል !", desc: "Matchday 8 Summary", img: "images/sports3.jpg" },
-        ],
-        Forex: [
-            { title: "USD/AUD rises 0.2%", desc: "Australian market trends", img: "images/forex1.jpeg" },
-            { title: "EUR/USD holds steady", desc: "Market analysis", img: "images/forex2.jpg" },
-        ],
-        Crypto: [
-            { title: "Bitcoin hits $70K", desc: "Crypto bull run returns", img: "images/crypto1.jpeg" },
-            { title: "Ethereum 2.0 gains traction", desc: "DeFi ecosystem growth", img: "images/crypto2.jpg" },
-        ],
+    const fetchTrendingPosts = async () => {
+        setLoading(true);
+        setError("");
+
+        try {
+            const res = await publicApi.get(`${BackEndUrl}/api/trending`);
+            setTrendingData(res.data);
+        } catch (error) {
+            setError("Failed to load Trending posts. Please try again.");
+            console.log("Error on trending data: ", error);
+        } finally {
+            setLoading(false);
+        }
     };
+
+    useEffect(() => {
+        fetchTrendingPosts();
+    }, [refresh]);
+
+    const sections = ["Sport", "Forex", "Crypto", "News", "Film", "Game"];
 
     return (
         <section id="trending" className="py-16 px-4 md:px-12">
-
             <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
-                <h2 className="text-2xl md:text-3xl font-bold">🔥 Trending Now</h2>
+                <h2 className="text-2xl md:text-3xl font-bold">
+                    🔥 Trending Now
+                </h2>
 
                 {/* Category Buttons */}
                 <div className="flex flex-wrap justify-center md:justify-end gap-3">
-                    {sections.map((s) => (
+                    {sections.map(s => (
                         <button
                             key={s}
                             onClick={() => setActive(s)}
-                            className={`px-4 py-2 rounded-lg text-sm md:text-base transition ${active === s
-                                ? "bg-gradient-to-r from-[#0077FF] to-[#00E0FF] text-white"
-                                : "bg-[#1C2541] text-[#A5A9B8] hover:text-white border border-[#00E0FF]"
-                                }`}
+                            className={`px-4 py-2 rounded-lg text-sm md:text-base transition ${
+                                active === s
+                                    ? "bg-gradient-to-r from-[#0077FF] to-[#00E0FF] text-white"
+                                    : "bg-[#1C2541] text-[#A5A9B8] hover:text-white border border-[#00E0FF]"
+                            }`}
                         >
                             {s}
                         </button>
@@ -44,19 +61,24 @@ const Trending = () => {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {trendingData[active]?.map((item, i) => (
-                    <div
-                        key={i}
-                        className="bg-[#141A29] rounded-xl overflow-hidden hover:shadow-[0_0_25px_#00E0FF40] transition"
-                    >
-                        <img src={item.img} alt={item.title} className="w-full h-48 object-cover" />
-                        <div className="p-5">
-                            <h3 className="text-xl font-semibold mb-1">{item.title}</h3>
-                            <p className="text-[#A5A9B8] text-sm">{item.desc}</p>
-                        </div>
-                    </div>
-                ))}
+                {["Sport", "Forex", "Crypto", "News"].includes(active) && (
+                    <TrendingPost posts={trendingData?.posts} active={active} />
+                )}
+
+                {active === "Film" && (
+                    <TrendingFilms films={trendingData?.films} />
+                )}
+
+                {active === "Game" && (
+                    <TrendingGames games={trendingData?.games} />
+                )}
             </div>
+
+            {loading && <PostsLoading count={3}/>}
+
+            {!loading && error && (
+                <PostsError message={error} onRetry={fetchTrendingPosts} />
+            )}
         </section>
     );
 };

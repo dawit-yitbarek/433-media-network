@@ -111,25 +111,12 @@ const ForexRateSection = () => {
                             className="bg-[#141A29] rounded-xl p-5 shadow-[0_0_15px_#00E0FF20] hover:shadow-[0_0_25px_#00E0FF40] transition"
                         >
                             <div className="flex justify-between items-center mb-3">
-                                <h3 className="text-lg font-semibold text-white">{r.pair}</h3>
-                                {r.change >= 0 ? (
-                                    <TrendingUp size={18} className="text-green-400" />
-                                ) : (
-                                    <TrendingDown size={18} className="text-red-400" />
-                                )}
-                            </div>
-
-                            <div className="flex justify-between items-end">
+                                <h3 className="text-lg font-semibold text-white">{r.pair}
+                                </h3>
                                 <span className="text-2xl font-bold text-[#00E0FF]">
                                     {r.price.toFixed(4)}
                                 </span>
-                                <span
-                                    className={`text-sm font-medium ${r.change >= 0 ? "text-green-400" : "text-red-400"
-                                        }`}
-                                >
-                                    {r.change >= 0 ? "+" : ""}
-                                    {r.change}%
-                                </span>
+                                
                             </div>
                         </div>
                     ))}

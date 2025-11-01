@@ -4,6 +4,7 @@ import { publicApi } from "./Api";
 import { PostsError } from "./ErrorComponent";
 import { TopHeadlinesLoader } from "./LoadingComponent";
 import { useSharedData } from '../context/SharedDataContext';
+import { Link } from "react-router-dom"
 const BackEndUrl = import.meta.env.VITE_BACKEND_URL;
 const FrontEndUrl = import.meta.env.VITE_FRONTEND_URL;
 
@@ -11,6 +12,7 @@ const TopHeadlines = () => {
     const [topHeadlines, setTopHeadlines] = useState([]);
     const [fetchingTopHeadlines, setFetchingTopHeadlines] = useState(false);
     const [topHeadlinesError, setTopHeadlinesError] = useState('');
+    const [refresh, setRefresh] = useState(0)
     const { setSharedData } = useSharedData();
 
     const fetchTopHeadlines = async () => {
@@ -32,7 +34,7 @@ const TopHeadlines = () => {
 
     useEffect(() => {
         fetchTopHeadlines()
-    }, [])
+    }, [refresh])
 
     const formatDate = (date) =>
         new Date(date).toLocaleDateString("en-US", {
@@ -60,7 +62,8 @@ const TopHeadlines = () => {
             {/* Grid Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Featured News */}
-                <a href={`${FrontEndUrl}/posts/${topHeadlines[0]?.id}`} className="lg:col-span-2 relative group rounded-2xl overflow-hidden shadow-[0_0_30px_#00E0FF10]">
+                {topHeadlines[0] && (
+                <Link to={`${FrontEndUrl}/posts/${topHeadlines[0]?.id}`} className="lg:col-span-2 relative group rounded-2xl overflow-hidden shadow-[0_0_30px_#00E0FF10]">
                     {/* <div className="lg:col-span-2 relative group rounded-2xl overflow-hidden shadow-[0_0_30px_#00E0FF10]"> */}
                     <img
                         src={topHeadlines[0]?.image_url}
@@ -80,13 +83,14 @@ const TopHeadlines = () => {
                         </div>
                     </div>
                     {/* </div> */}
-                </a>
+                </Link>
+                )}
 
                 {/* Secondary News */}
                 <div className="flex flex-col gap-6">
                     {topHeadlines?.slice(1).map((news, i) => (
-                        <a
-                            href={`${FrontEndUrl}/posts/${news.id}`}
+                        <Link
+                            to={`${FrontEndUrl}/posts/${news.id}`}
                             key={i}
                             className="flex gap-4 bg-[#141A29] rounded-xl overflow-hidden hover:shadow-[0_0_20px_#00E0FF30] transition"
                         >
@@ -109,7 +113,7 @@ const TopHeadlines = () => {
                                 </div>
                             </div>
                             {/* </div> */}
-                        </a>
+                        </Link>
                     ))}
                 </div>
             </div>
@@ -119,7 +123,10 @@ const TopHeadlines = () => {
             )}
 
             {topHeadlinesError && !fetchingTopHeadlines && (
-                <PostsError />
+                <PostsError 
+                    message={topHeadlinesError}
+                    onRetry={() => setRefresh(prev => prev + 1)}
+                />
             )}
         </section>
     );

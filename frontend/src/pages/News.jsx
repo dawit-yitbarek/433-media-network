@@ -1,12 +1,25 @@
-import { NewsHeroSection } from '../components/HeroSection'
-import TopHeadlines from '../components/TopHeadlines';
-import PostCard from '../components/PostCard';
-import { NewsCTASection } from '../components/CTASection';
-import { SharedDataProvider } from '../context/SharedDataContext';
+import { NewsHeroSection } from "../components/HeroSection";
+import TopHeadlines from "../components/TopHeadlines";
+import PostCard from "../components/PostCard";
+import { NewsCTASection } from "../components/CTASection";
+import { SharedDataProvider } from "../context/SharedDataContext";
+import SEOHead from "../components/SeoHead.jsx";
 
 const NewsPage = () => {
     return (
         <>
+          
+          <SEOHead
+                title={
+                    "4-3-3 News – Global & Financial Headlines in One Place"
+                }
+                description={
+                    "Read global, financial, and tech news updates curated by 4-3-3 Media Network — stay informed and ahead."
+                }
+                image={"/images/newsimg.jpeg"}
+                url={window.location.href}
+            />
+
             <SharedDataProvider>
                 {/* News Hero Section */}
                 <NewsHeroSection />
@@ -22,7 +35,8 @@ const NewsPage = () => {
                             Latest News from 4-3-3 Media
                         </h2>
                         <p className="text-[#A5A9B8] mt-2 text-sm md:text-base max-w-2xl mx-auto">
-                            Breaking updates, stories, and exclusive coverage — stay informed with the latest news headlines.
+                            Breaking updates, stories, and exclusive coverage —
+                            stay informed with the latest news headlines.
                         </p>
                         <div className="mt-4 w-24 h-[2px] bg-gradient-to-r from-[#0077FF] to-[#00E0FF] mx-auto rounded-full"></div>
                     </div>
@@ -33,7 +47,6 @@ const NewsPage = () => {
 
                 {/* News CTA Section */}
                 <NewsCTASection />
-
             </SharedDataProvider>
         </>
     );

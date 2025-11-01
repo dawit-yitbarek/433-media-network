@@ -65,8 +65,8 @@ export const TableLoading = () => {
 };
 
 
-export const PostsLoading = () => {
-    const skeletons = Array(6).fill(0);
+export const PostsLoading = ({count = 6}) => {
+    const skeletons = Array(count).fill(0);
 
     return (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 my-5 animate-pulse">
@@ -161,4 +161,67 @@ export const TopHeadlinesLoader = () => {
             </div>
         </div>
     );
+};
+
+
+
+export const FilmsLoading = () => {
+    const skeletons = Array(6).fill(0);
+
+    return (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 my-5 animate-pulse">
+            {skeletons.map((_, i) => (
+                <div
+                    key={i}
+                    className="bg-[#141A29] rounded-xl overflow-hidden shadow-[0_0_20px_#00E0FF20]"
+                >
+                    {/* Image skeleton */}
+                    <div className="h-56 w-full bg-[#475a66ff] relative overflow-hidden">
+                        <div className="absolute inset-0 animate-shimmer"></div>
+                    </div>
+
+                    {/* Text skeleton */}
+                    <div className="p-5 space-y-3">
+                        <div className="h-4 bg-[#1C2541] rounded w-1/4"></div>
+                        <div className="h-3 bg-[#1C2541] rounded w-1/2"></div>
+                        
+                        <div className="flex items-center pt-2">
+                            <div className="h-8 w-1/3 bg-[#1C2541] rounded"></div>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+};
+
+
+
+export const FeaturedFilmsLoading = () => {
+  const skeletons = Array(6).fill(0);
+
+  return (
+    <div className="flex gap-8 snap-x snap-mandatory overflow-x-auto no-scrollbar px-2 md:px-0 pb-8 scroll-smooth">
+      {skeletons.map((_, i) => (
+        <div
+          key={i}
+          className="snap-center flex-shrink-0 relative min-w-[250px] sm:min-w-[300px] lg:min-w-[340px] bg-[#141A29] rounded-2xl overflow-hidden shadow-[0_0_25px_#00E0FF20]"
+        >
+          {/* Image shimmer skeleton */}
+          <div className="h-[350px] w-full bg-[#1C2541] relative overflow-hidden animate-shimmer-cyan"></div>
+
+          {/* Text placeholders */}
+          <div className="absolute bottom-6 left-6 right-6 space-y-3 z-10">
+            <div className="h-5 bg-[#24304A] rounded w-3/4"></div>
+            <div className="h-3 bg-[#24304A] rounded w-1/2"></div>
+
+            <div className="flex justify-between items-center mt-4">
+              <div className="h-4 w-1/4 bg-[#24304A] rounded"></div>
+              <div className="h-4 w-1/3 bg-[#24304A] rounded"></div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 };

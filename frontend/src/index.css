@@ -76,3 +76,28 @@ textarea:-webkit-autofill:active {
       rgba(255, 255, 255, 0) 100%);
   animation: shimmer-post 1.8s infinite linear;
 }
+
+
+@keyframes shimmer-cyan {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer-cyan::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 119, 255, 0) 0%,
+    rgba(0, 224, 255, 0.25) 50%,
+    rgba(0, 119, 255, 0) 100%
+  );
+  animation: shimmer-cyan 1.8s infinite linear;
+}

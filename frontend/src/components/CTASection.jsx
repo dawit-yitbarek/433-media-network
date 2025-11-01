@@ -1,3 +1,5 @@
+import { Rocket } from "lucide-react";
+
 export const SportCTASection = () => {
     return (
         <section className="relative mt-24 mb-16 px-6 py-20 text-center rounded-3xl bg-gradient-to-b from-[#0A0F1C] to-[#1C2541] border border-[#1C2541] shadow-[0_0_25px_#00E0FF20] overflow-hidden">
@@ -120,3 +122,58 @@ export const NewsCTASection = () => {
         </section>
     );
 }
+
+
+export const FilmCTASection = () => {
+  return(
+    <section className="relative py-20 px-6 md:px-12 bg-gradient-to-b from-[#0A0F1C] via-[#10192E] to-[#1C2541] text-center text-white overflow-hidden">
+  {/* Decorative background overlay */}
+  <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1603791452906-e3abbaf2b4f2?auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center opacity-10"></div>
+  <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-transparent"></div>
+
+  <div className="relative z-10 max-w-3xl mx-auto">
+    <h2 className="text-3xl md:text-5xl font-bold font-['Bebas Neue'] leading-tight mb-4">
+      Join the 4-3-3 <span className="text-[#00E0FF]">Film Community</span>
+    </h2>
+    <p className="text-[#A5A9B8] text-sm md:text-base mb-8">
+      Discover new movies, share your opinions, and get early access to exclusive releases directly on our Telegram channels.
+    </p>
+
+    <button
+      onClick={() => window.open("https://t.me/Films_433", "_blank")}
+      className="px-8 py-3 rounded-xl bg-gradient-to-r from-[#0077FF] to-[#00E0FF] font-semibold text-[#0A0F1C] hover:shadow-[0_0_25px_#00E0FF70] transition"
+    >
+      🎥 Join on Telegram
+    </button>
+  </div>
+
+  {/* Subtle glow effect at the bottom */}
+  <div className="absolute bottom-0 left-0 w-full h-[150px] bg-gradient-to-t from-[#00E0FF20] to-transparent blur-2xl"></div>
+</section>
+    )
+};
+
+
+
+export const GamesCTASection = () => {
+  return (
+    <section className="relative py-20 px-6 text-center bg-gradient-to-r from-[#0077FF] to-[#00E0FF] text-white">
+      <div className="max-w-3xl mx-auto relative z-10">
+        <Rocket size={40} className="mx-auto mb-4" />
+        <h2 className="text-4xl md:text-5xl font-bold font-['Bebas Neue'] mb-4">
+          Join the 4-3-3 Gaming Universe
+        </h2>
+        <p className="text-white/90 text-sm md:text-base mb-8">
+          Connect with thousands of gamers, discover new releases, and be part of the fastest-growing gaming community.
+        </p>
+        <a
+          href="https://t.me/Game_Zone_433"
+          className="px-6 py-3 bg-[#0A0F1C] hover:bg-[#141A29] rounded-xl text-[#00E0FF] font-semibold transition"
+        >
+          Join the Community
+        </a>
+      </div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#ffffff20,transparent_70%)]"></div>
+    </section>
+  );
+};

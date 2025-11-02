@@ -108,7 +108,7 @@ const Sports = () => {
                 url={window.location.href}
             />
 
-            <div className="min-h-screen bg-gradient-to-b from-[#0A0F1C] to-[#1C2541] text-[#EAEAEA] pt-28 pb-16 px-3 sm:px-6 md:px-12 overflow-hidden">
+            <div className="bg-gradient-to-b from-[#0A0F1C] to-[#1C2541] text-[#EAEAEA] pt-28 pb-16 px-3 sm:px-6 md:px-12 overflow-hidden">
                 {/* Fixtures & Results Section */}
                 <section>
                     {/* Header */}

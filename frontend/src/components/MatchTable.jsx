@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useLayoutEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const MatchTable = ({ leagues }) => {
@@ -15,7 +15,8 @@ const MatchTable = ({ leagues }) => {
     "UEFA Champions League": "/icons/clicon3.jpg",
   };
 
-  const handleNext = () => setCurrentIndex((prev) => (prev + 1) % leagues.length);
+  const handleNext = () =>
+    setCurrentIndex((prev) => (prev + 1) % Math.max(1, leagues.length));
   const handlePrev = () =>
     setCurrentIndex((prev) => (prev === 0 ? leagues.length - 1 : prev - 1));
 
@@ -54,45 +55,54 @@ const MatchTable = ({ leagues }) => {
     }
   };
 
-  // ✅ Adjust container height when table changes
-  useEffect(() => {
-    if (slideRefs.current[currentIndex]) {
-      const activeHeight = slideRefs.current[currentIndex].offsetHeight;
-      setHeight(`${activeHeight}px`);
+  // measure the active slide BEFORE paint to avoid flicker
+  useLayoutEffect(() => {
+    const el = slideRefs.current[currentIndex];
+    if (el) {
+      // use getBoundingClientRect for accurate height including subpixel values
+      const h = Math.round(el.getBoundingClientRect().height);
+      setHeight(`${h}px`);
+    } else {
+      setHeight("auto");
     }
+    // also recalc on window resize (cleanup added)
+    const onResize = () => {
+      const el2 = slideRefs.current[currentIndex];
+      if (el2) {
+        const h2 = Math.round(el2.getBoundingClientRect().height);
+        setHeight(`${h2}px`);
+      }
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, [currentIndex, leagues]);
 
   return (
     <div
-      className="relative w-full overflow-hidden transition-[height] duration-700 ease-in-out"
+      className="relative w-full overflow-hidden transition-[height] duration-500 ease-in-out"
       style={{ height }}
     >
-      {/* Slider */}
+      {/* Slider - NOTE items-start prevents children being stretched to the tallest */}
       <div
-        className="flex transition-transform duration-700 ease-in-out"
+        className="flex items-start transition-transform duration-700 ease-in-out"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
         {leagues.map((league, index) => (
           <div
             key={index}
             ref={(el) => (slideRefs.current[index] = el)}
-            className="min-w-full flex-shrink-0 flex flex-col items-center"
+            // self-start ensures this slide isn't stretched by flex cross-axis
+            className="min-w-full flex-shrink-0 flex flex-col items-center self-start"
           >
             {/* League Header */}
             <div className="flex items-center justify-center gap-3 mb-6">
               <img
                 src={leagueIcons[league.league]}
-                alt={`${
-                  league.league === "Primera Division" ? "Laliga" : league.league
-                }`}
+                alt={`${league.league === "Primera Division" ? "Laliga" : league.league}`}
                 className="w-10 h-10 sm:w-12 rounded-xl sm:h-12 object-contain"
               />
               <h2 className="text-2xl sm:text-3xl font-bold text-white">
-                {`${
-                  league.league === "Primera Division"
-                    ? "Laliga"
-                    : league.league
-                }`}
+                {league.league === "Primera Division" ? "Laliga" : league.league}
               </h2>
             </div>
 
@@ -101,16 +111,10 @@ const MatchTable = ({ leagues }) => {
               <table className="w-full text-left">
                 <thead className="bg-[#0A0F1C] text-[#A5A9B8] text-xs sm:text-sm uppercase">
                   <tr>
-                    <th className="py-3 px-3 sm:px-4 text-center sm:text-right">
-                      Home
-                    </th>
+                    <th className="py-3 px-3 sm:px-4 text-center sm:text-right">Home</th>
                     <th className="py-3 px-3 sm:px-4 text-center">Score</th>
-                    <th className="py-3 pl-3 sm:pl-4 text-center sm:text-left">
-                      Away
-                    </th>
-                    <th className="py-3 pr-3 sm:pr-4 text-center md:text-left">
-                      Status
-                    </th>
+                    <th className="py-3 pl-3 sm:pl-4 text-center sm:text-left">Away</th>
+                    <th className="py-3 pr-3 sm:pr-4 text-center md:text-left">Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -118,12 +122,9 @@ const MatchTable = ({ leagues }) => {
                     <tr
                       key={match.id}
                       className={`hover:bg-[#1C2541]/40 transition ${
-                        match.status === "LIVE"
-                          ? "border-l-4 border-[#00E0FF]"
-                          : ""
+                        match.status === "LIVE" ? "border-l-4 border-[#00E0FF]" : ""
                       }`}
                     >
-                      {/* Home Team */}
                       <td className="py-4 text-right w-2/5 align-middle">
                         <div className="flex flex-col sm:flex-row sm:gap-2 justify-end items-center">
                           <img
@@ -142,15 +143,12 @@ const MatchTable = ({ leagues }) => {
                         </div>
                       </td>
 
-                      {/* Score */}
                       <td className="py-4 px-3 sm:px-4 text-center font-semibold text-[#00E0FF] text-sm sm:text-base w-1/5 align-middle">
-                        {match.score.fullTime.home !== null &&
-                        match.score.fullTime.away !== null
+                        {match.score.fullTime.home !== null && match.score.fullTime.away !== null
                           ? `${match.score.fullTime.home} - ${match.score.fullTime.away}`
                           : "vs"}
                       </td>
 
-                      {/* Away Team */}
                       <td className="py-4 text-left w-2/5 align-middle">
                         <div className="flex flex-col sm:flex-row items-center justify-start sm:gap-2">
                           <img
@@ -164,7 +162,6 @@ const MatchTable = ({ leagues }) => {
                         </div>
                       </td>
 
-                      {/* Status */}
                       <td className="py-4 text-center md:text-left align-middle">
                         {getStatusBadge(match.status, match.utcDate)}
                       </td>
@@ -180,26 +177,18 @@ const MatchTable = ({ leagues }) => {
                 <span
                   key={i}
                   className={`w-3 h-3 rounded-full transition-all ${
-                    i === currentIndex
-                      ? "bg-[#00E0FF]"
-                      : "bg-[#1C2541] hover:bg-[#00E0FF]/40 border border-[#00E0FF]/40"
+                    i === currentIndex ? "bg-[#00E0FF]" : "bg-[#1C2541] hover:bg-[#00E0FF]/40 border border-[#00E0FF]/40"
                   }`}
-                ></span>
+                />
               ))}
             </div>
 
-            {/* Navigation Buttons */}
+            {/* Navigation */}
             <div className="flex justify-center items-center w-full my-3">
-              <button
-                onClick={handlePrev}
-                className="bg-[#0A0F1C]/70 hover:bg-[#1C2541] border border-[#1C2541] p-3 mx-5 rounded-full text-[#00E0FF]"
-              >
+              <button onClick={handlePrev} className="bg-[#0A0F1C]/70 hover:bg-[#1C2541] border border-[#1C2541] p-3 mx-5 rounded-full text-[#00E0FF]">
                 <ChevronLeft size={24} />
               </button>
-              <button
-                onClick={handleNext}
-                className="bg-[#0A0F1C]/70 hover:bg-[#1C2541] border border-[#1C2541] p-3 mx-5 rounded-full text-[#00E0FF]"
-              >
+              <button onClick={handleNext} className="bg-[#0A0F1C]/70 hover:bg-[#1C2541] border border-[#1C2541] p-3 mx-5 rounded-full text-[#00E0FF]">
                 <ChevronRight size={24} />
               </button>
             </div>

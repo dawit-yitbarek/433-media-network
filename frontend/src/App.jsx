@@ -1,5 +1,12 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom';
+
 import Home from './pages/Home';
 import Sports from './pages/Sports';
 import ForexPage from './pages/Forex';
@@ -13,8 +20,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import NotFound from './pages/NotFound';
 
-// ✅ Custom hook for Telegram WebApp integration
-function useTelegramIntegration() {
+const AppContent = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -22,36 +28,40 @@ function useTelegramIntegration() {
     const tg = window.Telegram?.WebApp;
     if (!tg) return;
 
-    // Safe area fix (so navbar isn't behind Telegram top controls)
-    document.body.style.paddingTop = 'env(safe-area-inset-top)';
+    tg.ready();
+    tg.expand();
 
-    // Handle Telegram Back Button
+    // Ensure safe area padding for Telegram header (for fullscreen)
+    document.body.style.paddingTop = 'var(--tg-safe-area-inset-top)';
+
+    // Handle Telegram Back button logic
+    const handleBack = () => {
+      if (location.pathname === '/') {
+        tg.close();
+      } else {
+        navigate(-1);
+      }
+    };
+
+    tg.BackButton.onClick(handleBack);
+
+    // Show back button on non-home routes
     if (location.pathname !== '/') {
       tg.BackButton.show();
     } else {
       tg.BackButton.hide();
     }
 
-    const handleBack = () => {
-      navigate(-1);
-    };
-
-    tg.BackButton.onClick(handleBack);
-
     return () => {
       tg.BackButton.offClick(handleBack);
     };
-  }, [location.pathname, navigate]);
-}
-
-// ✅ Wrapper to apply Telegram logic inside Router
-function AppContent() {
-  useTelegramIntegration();
+  }, [location, navigate]);
 
   return (
-    <div className="pt-[env(safe-area-inset-top)] bg-[#0D1B2A] text-white min-h-screen flex flex-col">
+    <div className="bg-[#0D1B2A] text-white min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow">
+      {/* Add top padding to avoid overlap under Telegram header */}
+      <main className="flex-grow pt-[calc(16px+var(--tg-safe-area-inset-top))]">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/sports" element={<Sports />} />
@@ -68,14 +78,12 @@ function AppContent() {
       <Footer />
     </div>
   );
-}
-
-const App = () => {
-  return (
-    <Router>
-      <AppContent />
-    </Router>
-  );
 };
+
+const App = () => (
+  <Router>
+    <AppContent />
+  </Router>
+);
 
 export default App;

@@ -1,24 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   useNavigate,
   useLocation,
-} from 'react-router-dom';
+} from "react-router-dom";
 
-import Home from './pages/Home';
-import Sports from './pages/Sports';
-import ForexPage from './pages/Forex';
-import CryptoPage from './pages/Crypto';
-import NewsPage from './pages/News';
-import PostPage from './pages/Post';
-import FilmPage from './pages/Film';
-import GamePage from './pages/Game';
-import AdminPage from './pages/AdminPage';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import NotFound from './pages/NotFound';
+import Home from "./pages/Home";
+import Sports from "./pages/Sports";
+import ForexPage from "./pages/Forex";
+import CryptoPage from "./pages/Crypto";
+import NewsPage from "./pages/News";
+import PostPage from "./pages/Post";
+import FilmPage from "./pages/Film";
+import GamePage from "./pages/Game";
+import AdminPage from "./pages/AdminPage";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import NotFound from "./pages/NotFound";
 
 const AppContent = () => {
   const navigate = useNavigate();
@@ -31,36 +31,49 @@ const AppContent = () => {
     tg.ready();
     tg.expand();
 
-    // Ensure safe area padding for Telegram header (for fullscreen)
-    document.body.style.paddingTop = 'var(--tg-safe-area-inset-top)';
+    // prevent overlap with Telegram header
+    document.body.style.paddingTop = "var(--tg-safe-area-inset-top)";
 
-    // Handle Telegram Back button logic
-    const handleBack = () => {
-      if (location.pathname === '/') {
-        tg.close();
+    // 🔹 history stack tracking
+    const pathsStack = ["/"];
+
+    // push new route into stack when navigating
+    const unlisten = navigate((_, { location }) => {
+      const path = location.pathname;
+      if (pathsStack[pathsStack.length - 1] !== path) {
+        pathsStack.push(path);
+      }
+
+      if (path !== "/") {
+        tg.BackButton.show();
       } else {
-        navigate(-1);
+        tg.BackButton.hide();
+      }
+    });
+
+    // 🔹 handle back button click
+    const handleBack = () => {
+      if (pathsStack.length > 1) {
+        pathsStack.pop();
+        const previous = pathsStack[pathsStack.length - 1];
+        navigate(previous);
+      } else {
+        tg.close();
       }
     };
 
     tg.BackButton.onClick(handleBack);
 
-    // Show back button on non-home routes
-    if (location.pathname !== '/') {
-      tg.BackButton.show();
-    } else {
-      tg.BackButton.hide();
-    }
-
+    // cleanup
     return () => {
       tg.BackButton.offClick(handleBack);
+      unlisten();
     };
-  }, [location, navigate]);
+  }, [navigate]);
 
   return (
     <div className="bg-[#0D1B2A] text-white min-h-screen flex flex-col">
       <Navbar />
-      {/* Add top padding to avoid overlap under Telegram header */}
       <main className="flex-grow pt-[calc(16px+var(--tg-safe-area-inset-top))]">
         <Routes>
           <Route path="/" element={<Home />} />

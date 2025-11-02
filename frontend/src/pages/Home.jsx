@@ -32,7 +32,7 @@ const Home = () => {
       */}
 
       <div className="bg-gradient-to-b from-[#0A0F1C] to-[#1C2541] text-[#EAEAEA] min-h-screen">
-        <HomeHeroSection />
+        {/*<HomeHeroSection />*/}
         <Trending />
         <WhySection />
         <ExploreSection />

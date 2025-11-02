@@ -11,12 +11,17 @@ const Home = () => {
   const location = useLocation();
 const isTelegram = typeof window !== "undefined" && window.Telegram?.WebApp;
 
-  {/*useEffect(() => {
-    if (location.hash) {
-      const element = document.querySelector(location.hash);
-      if (element) element.scrollIntoView({ behavior: "smooth" });
+  useEffect(() => {
+  if (!isTelegram && location.hash) {
+    const element = document.querySelector(location.hash);
+    if (element) {
+      setTimeout(() => {
+        element.scrollIntoView({ behavior: "smooth" });
+      }, 200);
     }
-  }, [location]);*/}
+  }
+}, [location, isTelegram]);
+
 
   return (
     <>

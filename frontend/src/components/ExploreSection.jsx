@@ -83,6 +83,7 @@ const ExploreSection = () => {
                         <img
                             src={cat.img}
                             alt={cat.name}
+                            loading="lazy"
                             className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-40 transition duration-500"
                         />
                         <div className="relative z-10 p-6">

@@ -53,7 +53,7 @@ export const ForexCTASection = () => {
 
             <div className="mt-8 flex justify-center">
                 <button
-                    onClick={() => { window.open('https://t.me/Ethiocrypto_433') }}
+                    onClick={() => { window.open("https://t.me/Forex_Trade_433et", "_blank") }}
                     className="px-8 py-3 bg-gradient-to-r from-[#0077FF] to-[#00E0FF] text-white rounded-xl hover:shadow-[0_0_20px_#00E0FF] transition">
                     Join Telegram
                 </button>

@@ -1,35 +1,45 @@
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { LineChart, Rocket, ArrowRight, TrendingUp, Radio, Play, Film, Star, Gamepad2 } from "lucide-react";
 import { useSharedData } from '../context/SharedDataContext';
 
 export const HomeHeroSection = () => {
+    const stars = useMemo(() => {
+        return Array.from({ length: 600 }).map((_, i) => ({
+            key: `dot-${i}`,
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+            width: `${Math.random() * 2 + 1}px`,
+            height: `${Math.random() * 2 + 1}px`,
+            animationDelay: `${Math.random() * 3}s`,
+        }));
+    }, []); // runs only once on mount
+
+    const isTelegram = typeof window !== "undefined" && window.Telegram?.WebApp;
+    const blur = isTelegram ? "blur-[40px]" : "blur-[120px]";
+
     return (
         <section className="relative h-[90vh] flex flex-col justify-center items-center text-center overflow-hidden bg-[#0A0F1C]">
-            {/* Animated gradient background */}
-            {/* <div className="absolute inset-0 bg-gradient-to-br from-[#00172B] via-[#002E4E] to-[#0A0F1C] animate-gradient-move"></div> */}
-
-            {/* Glowing orbs for depth */}
-            <div className="absolute -top-32 -left-32 w-[400px] h-[400px] bg-[#0077FF]/20 rounded-full blur-[120px]"></div>
-            <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-[#00E0FF]/20 rounded-full blur-[120px]"></div>
+            {/* Glowing orbs */}
+            <div className={`absolute -top-32 -left-32 w-[400px] h-[400px] bg-[#0077FF]/20 rounded-full ${blur}`}></div>
+            <div className={`absolute bottom-0 right-0 w-[300px] h-[300px] bg-[#00E0FF]/20 rounded-full ${blur}`}></div>
 
             {/* Static stars */}
             <div className="absolute inset-0 z-0">
-                {[...Array(600)].map((_, i) => (
+                {stars.map(star => (
                     <span
-                        key={`dot-${i}`}
+                        key={star.key}
                         className="absolute bg-white rounded-full opacity-30"
                         style={{
-                            top: `${Math.random() * 100}%`,
-                            left: `${Math.random() * 100}%`,
-                            width: `${Math.random() * 2 + 1}px`,
-                            height: `${Math.random() * 2 + 1}px`,
-                            animationDelay: `${Math.random() * 3}s`,
+                            top: star.top,
+                            left: star.left,
+                            width: star.width,
+                            height: star.height,
+                            animationDelay: star.animationDelay,
                         }}
                     ></span>
                 ))}
             </div>
-
 
             {/* Overlay for readability */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0A0F1C]/50 to-[#0A0F1C]/95"></div>
@@ -45,14 +55,13 @@ export const HomeHeroSection = () => {
                 <a href="#trending" className="px-6 py-3 bg-gradient-to-r from-[#0077FF] to-[#00E0FF] text-white rounded-xl hover:shadow-[0_0_15px_#00E0FF] transition">
                     Explore Now
                 </a>
-
                 <a href="https://t.me/sport_be_ethiopia" className="px-6 py-3 border border-[#00E0FF] text-[#00E0FF] rounded-xl hover:bg-[#00E0FF]/10 transition">
                     Join Telegram
                 </a>
             </div>
         </section>
-    )
-}
+    );
+};
 
 
 export const ForexHeroSection = () => {

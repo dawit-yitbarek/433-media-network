@@ -9,19 +9,23 @@ import SEOHead from "../components/SeoHead.jsx";
 
 const Home = () => {
   const location = useLocation();
-const isTelegram = typeof window !== "undefined" && window.Telegram?.WebApp;
+  const isTelegram = typeof window !== "undefined" && window.Telegram?.WebApp;
 
   useEffect(() => {
-  if (!isTelegram && location.hash) {
-    const element = document.querySelector(location.hash);
-    if (element) {
-      setTimeout(() => {
-        element.scrollIntoView({ behavior: "smooth" });
-      }, 200);
-    }
-  }
-}, [location, isTelegram]);
+    // 🚫 skip everything in Telegram WebView
+    if (isTelegram) return;
 
+    if (location.hash) {
+      try {
+        const element = document.querySelector(location.hash);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      } catch (err) {
+        console.warn("Scroll error:", err);
+      }
+    }
+  }, [location, isTelegram]);
 
   return (
     <>
@@ -33,7 +37,6 @@ const isTelegram = typeof window !== "undefined" && window.Telegram?.WebApp;
           url={typeof window !== "undefined" ? window.location.href : ""}
         />
       )}
-      
 
       <div className="bg-gradient-to-b from-[#0A0F1C] to-[#1C2541] text-[#EAEAEA] min-h-screen">
         <HomeHeroSection />

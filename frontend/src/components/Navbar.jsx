@@ -8,7 +8,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const [currentPath, setCurrentPath] = useState("/");
-  const [isTelegram, setIsTelegram] = useState(false);
+  const [canShowBack, setCanShowBack] = useState(false);
 
   // Update current path
   useEffect(() => {
@@ -17,13 +17,15 @@ const Navbar = () => {
 
   // Detect Telegram Mini App after mount
   useEffect(() => {
-    if (window?.Telegram?.WebApp) {
-      const tg = window.Telegram.WebApp;
-      tg.ready();
-      tg.BackButton.hide();
-      setIsTelegram(true);
+  try {
+    // Attempt to access a global that only exists in normal browsers
+    if (window.someBrowserOnlyFunction) {
+      setCanShowBack(true);
     }
-  }, []);
+  } catch (e) {
+    setCanShowBack(false); // running in Telegram
+  }
+}, []);
 
   // Prevent scrolling when sidebar is open
   useEffect(() => {
@@ -53,7 +55,7 @@ const Navbar = () => {
   const currentTelegramLink = telegramLinks[currentPath] || telegramLinks["/"];
 
   // Show custom back button only in Telegram Mini App, not on home page
-  const showBackButton = isTelegram && location.pathname !== "/";
+  const showBackButton = canShowBack && location.pathname !== "/";
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-[#0A0F1C] border-b border-[#1C2541]">

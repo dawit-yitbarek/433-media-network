@@ -108,11 +108,11 @@ const Sports = () => {
                 url={window.location.href}
             />
 
-            <div className="bg-gradient-to-b from-[#0A0F1C] to-[#1C2541] text-[#EAEAEA] pt-28 pb-16 px-3 sm:px-6 md:px-12">
+            <div className="min-h-screen bg-gradient-to-b from-[#0A0F1C] to-[#1C2541] text-[#EAEAEA] pt-28 pb-16 px-3 sm:px-6 md:px-12 overflow-hidden">
                 {/* Fixtures & Results Section */}
-                <section>
+                <section className="mb-12">
                     {/* Header */}
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-4">
                         <h1 className="text-4xl md:text-5xl font-bold font-['Bebas Neue'] text-white">
                             {matchDateDisplay}
                         </h1>
@@ -168,7 +168,7 @@ const Sports = () => {
                 </section>
 
                 {/* Sport Posts Section */}
-                <SportsPosts />
+                <SportsPosts className="mt-8"/>
 
                 {/* CTA Section */}
                 <SportCTASection />

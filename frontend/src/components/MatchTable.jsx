@@ -150,7 +150,7 @@ const MatchTable = ({ leagues }) => {
                         </div>
 
                         {/* Pagination Dots */}
-                        <div className="flex justify-center gap-2 mt-6">
+                        <div className="flex justify-center gap-2 mt-3">
                             {leagues.map((_, i) => (
                                 <span
                                     key={i}
@@ -163,7 +163,7 @@ const MatchTable = ({ leagues }) => {
                         </div>
 
                         {/* Navigation Buttons */}
-                        <div className="flex justify-center items-center w-full my-3">
+                        <div className="flex justify-center items-center w-full mt-3 mb-0">
                             <button
                                 onClick={handlePrev}
                                 className="bg-[#0A0F1C]/70 hover:bg-[#1C2541] border border-[#1C2541] p-3 mx-5 rounded-full text-[#00E0FF]"

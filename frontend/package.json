@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@telegram-apps/sdk": "^3.11.8",
     "axios": "^1.11.0",
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.546.0",

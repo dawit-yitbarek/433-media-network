@@ -24,52 +24,49 @@ const AppContent = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    const tg = window.Telegram?.WebApp;
-    if (!tg) return;
+useEffect(() => {
+  const tg = window.Telegram?.WebApp;
+  if (!tg) return;
 
-    tg.ready();
-    tg.expand();
+  tg.ready();
+  tg.expand();
 
-    // prevent overlap with Telegram header
-    document.body.style.paddingTop = "var(--tg-safe-area-inset-top)";
+  document.body.style.paddingTop = "var(--tg-safe-area-inset-top)";
 
-    // 🔹 history stack tracking
-    const pathsStack = ["/"];
+  const pathsStack = [location.pathname];
 
-    // push new route into stack when navigating
-    const unlisten = navigate((_, { location }) => {
-      const path = location.pathname;
-      if (pathsStack[pathsStack.length - 1] !== path) {
-        pathsStack.push(path);
-      }
+  const unlisten = navigate((_, { location }) => {
+    const path = location.pathname;
+    if (pathsStack[pathsStack.length - 1] !== path) {
+      pathsStack.push(path);
+    }
 
-      if (path !== "/") {
-        tg.BackButton.show();
-      } else {
-        tg.BackButton.hide();
-      }
-    });
+    if (path !== "/") {
+      tg.BackButton.show();
+    } else {
+      tg.BackButton.hide();
+    }
+  });
 
-    // 🔹 handle back button click
-    const handleBack = () => {
-      if (pathsStack.length > 1) {
-        pathsStack.pop();
-        const previous = pathsStack[pathsStack.length - 1];
-        navigate(previous);
-      } else {
-        tg.close();
-      }
-    };
+  const handleBack = () => {
+    if (pathsStack.length > 1) {
+      pathsStack.pop();
+      const previous = pathsStack[pathsStack.length - 1];
+      navigate(previous);
+    } else {
+      tg.close();
+    }
+  };
 
-    tg.BackButton.onClick(handleBack);
+  // ✅ Use global event listener instead of BackButton.onClick
+  tg.onEvent('backButtonClicked', handleBack);
 
-    // cleanup
-    return () => {
-      tg.BackButton.offClick(handleBack);
-      unlisten();
-    };
-  }, [navigate]);
+  return () => {
+    tg.offEvent('backButtonClicked', handleBack);
+    unlisten();
+  };
+}, [navigate, location.pathname]);
+
 
   return (
     <div className="bg-[#0D1B2A] text-white min-h-screen flex flex-col">

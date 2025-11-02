@@ -53,7 +53,7 @@ const Navbar = () => {
   const showBackButton = location.pathname !== "/";
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-[#0A0F1C] border-b border-[#1C2541]">
+    <nav className="fixed top-10 left-0 w-full z-50 bg-[#0A0F1C] border-b border-[#1C2541]">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-4 md:px-8 py-4">
         {/* Left side: Back button or Logo */}
         {showBackButton ? (

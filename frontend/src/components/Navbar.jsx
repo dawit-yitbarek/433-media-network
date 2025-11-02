@@ -6,8 +6,8 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-
   const [currentPath, setCurrentPath] = useState("/");
+  const [isTelegram, setIsTelegram] = useState(false);
 
   useEffect(() => {
     setCurrentPath(location.pathname);
@@ -18,9 +18,10 @@ const Navbar = () => {
     document.body.style.overflow = open ? "hidden" : "auto";
   }, [open]);
 
-  // Hide Telegram's native Back/Close button
+  // Detect Telegram WebApp and hide native back button
   useEffect(() => {
     if (window.Telegram?.WebApp) {
+      setIsTelegram(true);
       const tg = window.Telegram.WebApp;
       tg.ready();
       tg.BackButton.hide();
@@ -47,24 +48,21 @@ const Navbar = () => {
     "/games": "https://t.me/Game_Zone_433",
   };
 
-  const currentTelegramLink =
-    telegramLinks[currentPath] || telegramLinks["/"];
-    const isTelegram = !!window.Telegram?.WebApp;
-
+  const currentTelegramLink = telegramLinks[currentPath] || telegramLinks["/"];
   const showBackButton = isTelegram && location.pathname !== "/";
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-[#0A0F1C] border-b border-[#1C2541]">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-4 md:px-8 py-4">
-        {/* Left side: Back button or Logo */}
-        {showBackButton && (
+        {/* Left: Telegram back button or Logo */}
+        {showBackButton ? (
           <button
             onClick={() => navigate(-1)}
             className="flex items-center gap-1 text-white hover:text-[#00E0FF]"
           >
             <ArrowLeft size={20} /> Back
           </button>
-          )}
+        ) : (
           <h1 className="text-2xl md:text-3xl font-bold font-['Bebas Neue']">
             <Link to="/">
               <span className="bg-gradient-to-r from-[#0077FF] to-[#00E0FF] bg-clip-text text-transparent">
@@ -73,6 +71,7 @@ const Navbar = () => {
               <span className="text-[#EAEAEA]">Media Network</span>
             </Link>
           </h1>
+        )}
 
         {/* Desktop Links */}
         <div className="hidden lg:flex items-center gap-6 text-[#EAEAEA]">
@@ -118,7 +117,6 @@ const Navbar = () => {
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        {/* Header with close icon */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#1C2541]">
           <h2 className="text-xl font-['Bebas Neue'] text-[#EAEAEA]">Menu</h2>
           <button onClick={() => setOpen(false)} className="text-[#EAEAEA]">
@@ -126,7 +124,6 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Nav Links */}
         <div className="flex flex-col items-center gap-6 py-10 text-[#EAEAEA] flex-grow">
           {navLinks.map((link) => (
             <Link
@@ -142,7 +139,6 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Join Telegram Button */}
         <div className="p-6">
           <button
             onClick={() => {

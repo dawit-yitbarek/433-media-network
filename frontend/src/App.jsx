@@ -22,10 +22,6 @@ function useTelegramIntegration() {
     const tg = window.Telegram?.WebApp;
     if (!tg) return;
 
-    // Expand to full safe height
-    tg.expand();
-    tg.ready();
-
     // Safe area fix (so navbar isn't behind Telegram top controls)
     document.body.style.paddingTop = 'env(safe-area-inset-top)';
 

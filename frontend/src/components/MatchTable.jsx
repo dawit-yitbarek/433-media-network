@@ -27,6 +27,7 @@ const MatchTable = ({ leagues }) => {
         switch (status) {
             case "LIVE":
             case "IN_PLAY":
+            case "PAUSED":
                 return (
                     <span className="px-3 py-1 text-xs bg-[#00E0FF]/10 text-[#00E0FF] rounded-lg animate-pulse">
                         LIVE

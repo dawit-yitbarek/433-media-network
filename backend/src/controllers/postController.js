@@ -3,11 +3,11 @@ import pool from "../config/db.js"
 dotenv.config();
 
 export async function getPosts(req, res) {
-    const { category, limit = 9, offset = 0 } = req.query; // default 9 posts per fetch
+  const { category, limit = 9, offset = 0 } = req.query; // default 9 posts per fetch
 
-    try {
-        const posts = await pool.query(
-            `
+  try {
+    const posts = await pool.query(
+      `
       SELECT 
         posts.id,
         posts.title,
@@ -22,24 +22,24 @@ export async function getPosts(req, res) {
       ORDER BY posts.created_at DESC
       LIMIT $2 OFFSET $3;
       `,
-            [category, limit, offset]
-        );
+      [category, limit, offset]
+    );
 
-        res.status(200).json({ posts: posts.rows });
-    } catch (error) {
-        console.error("Error fetching posts:", error.message);
-        res
-            .status(500)
-            .json({ success: false, message: "Internal server error" });
-    }
+    res.status(200).json({ posts: posts.rows });
+  } catch (error) {
+    console.error("Error fetching posts:", error.message);
+    res
+      .status(500)
+      .json({ success: false, message: "Internal server error" });
+  }
 }
 
 
 export async function getTopHeadines(req, res) {
 
-    try {
-        const posts = await pool.query(
-            `
+  try {
+    const posts = await pool.query(
+      `
       SELECT 
         posts.id,
         posts.title,
@@ -53,24 +53,24 @@ export async function getTopHeadines(req, res) {
       ORDER BY posts.created_at DESC
       LIMIT $2;
       `,
-            ['news', 4]
-        );
+      ['news', 4]
+    );
 
-        res.status(200).json({ posts: posts.rows });
-    } catch (error) {
-        console.error("Error fetching posts:", error.message);
-        res
-            .status(500)
-            .json({ success: false, message: "Internal server error" });
-    }
+    res.status(200).json({ posts: posts.rows });
+  } catch (error) {
+    console.error("Error fetching posts:", error.message);
+    res
+      .status(500)
+      .json({ success: false, message: "Internal server error" });
+  }
 }
 
 
 export async function getSpecificPost(req, res) {
-    const { id } = req.params;
-    try {
-        const post = await pool.query(
-            `
+  const { id } = req.params;
+  try {
+    const post = await pool.query(
+      `
       SELECT 
         posts.id,
         posts.title,
@@ -83,14 +83,14 @@ export async function getSpecificPost(req, res) {
       JOIN admins ON posts.admin_id = admins.id
       WHERE posts.id = $1;
       `,
-            [id]
-        );
+      [id]
+    );
 
-        res.status(200).json({ post: post.rows[0] });
-    } catch (error) {
-        console.error("Error fetching post:", error.message);
-        res.status(500).json({ success: false, message: "Internal server error" });
-    }
+    res.status(200).json({ post: post.rows[0] });
+  } catch (error) {
+    console.error("Error fetching post:", error.message);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
 }
 
 
@@ -111,7 +111,7 @@ export const addGeneralPost = async (req, res) => {
     const { rows } = await pool.query(query, [title, content, image_url, admin_id, category]);
     res.status(201).json({ success: true, message: "Post created successfully!", post: rows[0] });
   } catch (err) {
-    console.error("Error adding post:", err);
+    console.error("Error adding post:", err.message);
     res.status(500).json({ success: false, message: "Failed to create post." });
   }
 };
@@ -136,13 +136,13 @@ export const addFilm = async (req, res) => {
     const { rows } = await pool.query(query, [title, genre, rating, image_url, link, admin_id]);
     res.status(201).json({ success: true, message: "Film added successfully!", film: rows[0] });
   } catch (err) {
-    console.error("Error adding film:", err);
+    console.error("Error adding film:", err.message);
     res.status(500).json({ success: false, message: "Failed to add film." });
   }
 };
 
 
-  //🎮 Add Game
+//🎮 Add Game
 export const addGame = async (req, res) => {
   const { title, badges, image_url, link, admin_id } = req.body;
 

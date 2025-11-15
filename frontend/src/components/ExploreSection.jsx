@@ -6,49 +6,49 @@ const ExploreSection = () => {
             name: "Sports",
             desc: "Live scores, fixtures, and highlights from world football.",
             color: "from-[#0077FF] to-[#00E0FF]",
-            img: "/images/sportimg.jpg",
+            img: "/images/sportimg.webp",
             link: "/sports"
         },
         {
             name: "Forex",
             desc: "Market updates and insights from global currencies.",
             color: "from-[#2ECC71] to-[#00E0FF]",
-            img: "/images/foreximg.png",
+            img: "/images/foreximg.webp",
             link: "/forex"
         },
         {
             name: "Crypto",
             desc: "Track the latest crypto prices, trends, and projects.",
             color: "from-[#FF512F] to-[#DD2476]",
-            img: "/images/cryptoimg.jpeg",
+            img: "/images/cryptoimg.webp",
             link: "/crypto"
         },
         {
             name: "Films",
             desc: "Entertainment, trailers, and Ethiopian film culture.",
             color: "from-[#8E2DE2] to-[#4A00E0]",
-            img: "/images/filmimg.jpeg",
+            img: "/images/filmimg.webp",
             link: "/films"
         },
         //{
         //name: "Music",
         //desc: "Beats, trends, and hits from across the world.",
         //color: "from-[#00C9FF] to-[#92FE9D]",
-        //img: "/images/musicimg.jpeg",
+        //img: "/images/musicimg.webp",
         //link: "/music",
         //},
         {
             name: "News",
             desc: "Stay informed with the latest stories and updates.",
             color: "from-[#F7971E] to-[#FFD200]",
-            img: "/images/newsimg.jpeg",
+            img: "/images/newsimg.webp",
             link: "/news"
         },
         {
             name: "Games",
             desc: "Mobile and console gaming content for the 4-3-3 community.",
             color: "from-[#00E0FF] to-[#0077FF]",
-            img: "/images/gameimg.jpeg",
+            img: "/images/gameimg.webp",
             link: "/games"
         }
     ];

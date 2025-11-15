@@ -183,8 +183,9 @@ const AdminAuth = () => {
         localStorage.setItem("adminData", JSON.stringify(res.data.admin));
         setSuccessMsg(isSignup ? "Signup successful!" : "Signin successful!");
       }
-      
-      setFormData({ name: "", email: "", password: "", fieldPasswords: {} })
+
+      // Reset form data after successful submission
+      setFormData({ name: "", email: "", password: "", fieldPasswords: {} });
       window.location.reload();
     } catch (error) {
       const msg = error.response?.data?.message || "Something went wrong.";
@@ -192,6 +193,16 @@ const AdminAuth = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleToggle = () => {
+    setIsSignup((prev) => {
+      const newSignupState = !prev;
+      // Reset form data on toggle between SignUp and SignIn
+      setFormData({ name: "", email: "", password: "", fieldPasswords: {} });
+      setErrorMsg("");
+      return newSignupState;
+    });
   };
 
   return (
@@ -204,13 +215,13 @@ const AdminAuth = () => {
         {/* Toggle */}
         <div className="flex justify-between mb-8">
           <h2
-            onClick={() => setIsSignup(false)}
+            onClick={() => handleToggle()}
             className={`cursor-pointer font-['Bebas Neue'] text-2xl md:text-3xl ${!isSignup ? "text-[#00E0FF]" : "text-gray-400"}`}
           >
             Sign In
           </h2>
           <h2
-            onClick={() => setIsSignup(true)}
+            onClick={() => handleToggle()}
             className={`cursor-pointer font-['Bebas Neue'] text-2xl md:text-3xl ${isSignup ? "text-[#00E0FF]" : "text-gray-400"}`}
           >
             Sign Up
@@ -221,23 +232,25 @@ const AdminAuth = () => {
         {successMsg && <p className="text-green-400 text-sm mb-3">{successMsg}</p>}
 
         <AnimatePresence mode="wait">
-          {!isSignup ? (
-            <SignInForm {...{ formData, handleChange, handleSubmit, showPassword, setShowPassword, loading }} />
-          ) : (
-            <SignUpForm
-              {...{
-                formData,
-                handleChange,
-                handleSubmit,
-                handleToggleField,
-                activeFields,
-                handleFieldPasswordChange,
-                showPassword,
-                setShowPassword,
-                loading,
-              }}
-            />
-          )}
+          <div>
+            {!isSignup ? (
+              <SignInForm {...{ formData, handleChange, handleSubmit, showPassword, setShowPassword, loading }} />
+            ) : (
+              <SignUpForm
+                {...{
+                  formData,
+                  handleChange,
+                  handleSubmit,
+                  handleToggleField,
+                  activeFields,
+                  handleFieldPasswordChange,
+                  showPassword,
+                  setShowPassword,
+                  loading,
+                }}
+              />
+            )}
+          </div>
         </AnimatePresence>
       </motion.div>
     </section>

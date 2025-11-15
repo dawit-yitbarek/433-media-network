@@ -7,12 +7,12 @@ const MatchTable = ({ leagues }) => {
   const slideRefs = useRef([]);
 
   const leagueIcons = {
-    "Premier League": "/icons/eplicon.jpeg",
+    "Premier League": "/icons/eplicon.webp",
     "Primera Division": "/icons/laicon.webp",
-    "Serie A": "/icons/saicon.jpeg",
-    "Bundesliga": "/icons/buicon.jpg",
-    "Ligue 1": "/icons/flicon.png",
-    "UEFA Champions League": "/icons/clicon3.jpg",
+    "Serie A": "/icons/saicon.webp",
+    "Bundesliga": "/icons/buicon.webp",
+    "Ligue 1": "/icons/flicon.webp",
+    "UEFA Champions League": "/icons/clicon.webp",
   };
 
   const handleNext = () =>

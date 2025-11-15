@@ -10,14 +10,16 @@ const Navbar = () => {
   const [currentPath, setCurrentPath] = useState("/");
   const [isTelegram, setIsTelegram] = useState(false);
 
-  // Update current path
   useEffect(() => {
     setCurrentPath(location.pathname);
   }, [location.pathname]);
 
   // Detect Telegram Mini App after mount
   useEffect(() => {
-    if (window?.Telegram?.WebApp) {
+    const tg = window.Telegram?.WebApp;
+    if (!tg || !tg.initDataUnsafe?.user) {
+      setIsTelegram(false);
+    } else {
       setIsTelegram(true);
     }
   }, []);
@@ -81,9 +83,8 @@ const Navbar = () => {
             <Link
               to={link.href}
               key={link.name}
-              className={`hover:text-[#00E0FF] transition-colors ${
-                currentPath === link.href && "text-[#00E0FF]"
-              }`}
+              className={`hover:text-[#00E0FF] transition-colors ${currentPath === link.href && "text-[#00E0FF]"
+                }`}
             >
               {link.name}
             </Link>
@@ -115,9 +116,8 @@ const Navbar = () => {
 
       {/* Sidebar Menu */}
       <div
-        className={`fixed top-0 right-0 h-full w-3/4 max-w-xs bg-[#0A0F1C] border-l border-[#1C2541] shadow-xl z-50 transform transition-transform duration-300 flex flex-col ${
-          open ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 h-full w-3/4 max-w-xs bg-[#0A0F1C] border-l border-[#1C2541] shadow-xl z-50 transform transition-transform duration-300 flex flex-col ${open ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         {/* Header with close icon */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#1C2541]">
@@ -134,9 +134,8 @@ const Navbar = () => {
               to={link.href}
               key={link.name}
               onClick={() => setOpen(false)}
-              className={`hover:text-[#00E0FF] transition-colors ${
-                currentPath === link.href && "text-[#00E0FF]"
-              }`}
+              className={`hover:text-[#00E0FF] transition-colors ${currentPath === link.href && "text-[#00E0FF]"
+                }`}
             >
               {link.name}
             </Link>

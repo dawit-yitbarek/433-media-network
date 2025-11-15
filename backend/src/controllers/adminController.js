@@ -14,6 +14,7 @@ export const registerAdmin = async (req, res) => {
       return res.status(400).json({ message: "All fields are required." });
     }
 
+
     // 2️⃣ Check if admin already exists
     const existingAdmin = await pool.query("SELECT id FROM admins WHERE email = $1", [email]);
     if (existingAdmin.rows.length > 0) {
@@ -124,5 +125,55 @@ export const signinAdmin = async (req, res) => {
   } catch (error) {
     console.error("Signin error:", error.message);
     res.status(500).json({ message: "Internal server error. Please try again later." });
+  }
+};
+
+
+export const requestFieldAccess = async (req, res) => {
+  try {
+    const { admin_id, field, access_key } = req.body;
+
+    if (!admin_id || !field || !access_key)
+      return res.status(400).json({ message: "Missing required fields." });
+
+    // 1️⃣ Check if admin exists
+    const adminRes = await pool.query("SELECT id, fields FROM admins WHERE id = $1", [admin_id]);
+    if (adminRes.rows.length === 0)
+      return res.status(404).json({ message: "Admin not found." });
+
+    const admin = adminRes.rows[0];
+
+    // 2️⃣ Check if field already granted
+    if (admin.fields.includes(field))
+      return res.status(400).json({ message: `${field.toUpperCase()} already granted.` });
+
+    // 3️⃣ Verify the access key
+    const fieldKeys = {
+      sport: process.env.SPORT_KEY,
+      forex: process.env.FOREX_KEY,
+      crypto: process.env.CRYPTO_KEY,
+      news: process.env.NEWS_KEY,
+      film: process.env.FILM_KEY,
+      game: process.env.GAME_KEY,
+    };
+
+    const expectedKey = fieldKeys[field];
+    if (!expectedKey)
+      return res.status(400).json({ message: "Invalid field type." });
+
+    if (access_key.trim() !== expectedKey)
+      return res.status(403).json({ message: `Invalid access key for ${field}.` });
+
+    // 4️⃣ Update admin fields array
+    const updatedFields = [...admin.fields, field];
+    await pool.query("UPDATE admins SET fields = $1 WHERE id = $2", [updatedFields, admin_id]);
+
+    res.status(200).json({
+      message: `${field.toUpperCase()} access granted successfully.`,
+      updatedFields,
+    });
+  } catch (error) {
+    console.error("Error in requestFieldAccess:", error.message);
+    res.status(500).json({ message: "Internal server error." });
   }
 };

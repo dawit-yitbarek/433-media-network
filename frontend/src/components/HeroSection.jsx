@@ -13,7 +13,7 @@ export const HomeHeroSection = () => {
             height: `${Math.random() * 2 + 1}px`,
             animationDelay: `${Math.random() * 3}s`,
         }));
-    }, []); // runs only once on mount
+    }, []);
 
     const isTelegram = typeof window !== "undefined" && window.Telegram?.WebApp;
     const blur = isTelegram ? "blur-[40px]" : "blur-[120px]";
@@ -306,14 +306,14 @@ export const FilmsHeroSection = () => {
 
                     <div className="flex flex-col mt-8 md:mb-1 sm:flex-row gap-4 justify-center">
                         <a
-                        href="#explore"
-                        className="px-8 py-3 bg-gradient-to-r from-[#0077FF] to-[#00E0FF] rounded-xl font-medium hover:shadow-[0_0_20px_#00E0FF80] transition">
+                            href="#explore"
+                            className="px-8 py-3 bg-gradient-to-r from-[#0077FF] to-[#00E0FF] rounded-xl font-medium hover:shadow-[0_0_20px_#00E0FF80] transition">
                             <Play size={18} className="inline mr-2" />
                             Explore Films
                         </a>
-                        <a 
-                        href="https://t.me/Films_433"
-                        className="px-8 py-3 border border-[#00E0FF] text-[#00E0FF] rounded-xl hover:bg-[#00E0FF]/10 transition">
+                        <a
+                            href="https://t.me/Films_433"
+                            className="px-8 py-3 border border-[#00E0FF] text-[#00E0FF] rounded-xl hover:bg-[#00E0FF]/10 transition">
                             Join Telegram
                         </a>
                     </div>
@@ -351,59 +351,59 @@ export const FilmsHeroSection = () => {
 
 
 export const GamesHeroSection = () => {
-  return (
-    <section className="relative overflow-hidden flex flex-col justify-center items-center text-center py-24 px-6 md:px-12">
-      {/* Background grid */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,224,255,0.15),transparent_70%)]"></div>
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,119,255,0.15)_1px,transparent_1px),linear-gradient(180deg,rgba(0,119,255,0.15)_1px,transparent_1px)] bg-[size:40px_40px] opacity-30"></div>
+    return (
+        <section className="relative overflow-hidden flex flex-col justify-center items-center text-center py-24 px-6 md:px-12">
+            {/* Background grid */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,224,255,0.15),transparent_70%)]"></div>
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,119,255,0.15)_1px,transparent_1px),linear-gradient(180deg,rgba(0,119,255,0.15)_1px,transparent_1px)] bg-[size:40px_40px] opacity-30"></div>
 
-      {/* Floating light particles */}
-      <div className="absolute inset-0 overflow-hidden z-0">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-[#00E0FF] rounded-full"
-            initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-              opacity: 0.2,
-              scale: 0.5,
-            }}
-            animate={{
-              y: [Math.random() * 200, Math.random() * -200],
-              opacity: [0.2, 0.6, 0.2],
-              scale: [0.3, 0.8, 0.3],
-            }}
-            transition={{
-              duration: 6 + Math.random() * 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
-      </div>
+            {/* Floating light particles */}
+            <div className="absolute inset-0 overflow-hidden z-0">
+                {[...Array(20)].map((_, i) => (
+                    <motion.div
+                        key={i}
+                        className="absolute w-1 h-1 bg-[#00E0FF] rounded-full"
+                        initial={{
+                            x: Math.random() * window.innerWidth,
+                            y: Math.random() * window.innerHeight,
+                            opacity: 0.2,
+                            scale: 0.5,
+                        }}
+                        animate={{
+                            y: [Math.random() * 200, Math.random() * -200],
+                            opacity: [0.2, 0.6, 0.2],
+                            scale: [0.3, 0.8, 0.3],
+                        }}
+                        transition={{
+                            duration: 6 + Math.random() * 4,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                        }}
+                    />
+                ))}
+            </div>
 
-      {/* Main Content */}
-      <motion.div
-        className="relative z-10 max-w-3xl"
-        initial={{ opacity: 0, y: 25 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-      >
-        <Gamepad2 className="mx-auto text-[#00E0FF] mb-4" size={48} />
-        <h1 className="text-4xl md:text-6xl font-bold text-white font-['Bebas Neue'] tracking-wide mb-3">
-          ENTER THE 4-3-3 GAMING WORLD
-        </h1>
-        <p className="text-[#A5A9B8] text-base md:text-lg mb-8 max-w-2xl mx-auto">
-          Discover the hottest games — online or offline. Explore, compete, and connect with players worldwide.
-        </p>
-        <a
-          href="#featured"
-          className="inline-block px-6 py-3 bg-gradient-to-r from-[#0077FF] to-[#00E0FF] text-white rounded-xl font-semibold hover:shadow-[0_0_25px_#00E0FF70] transition"
-        >
-          Browse Games
-        </a>
-      </motion.div>
-    </section>
-  );
+            {/* Main Content */}
+            <motion.div
+                className="relative z-10 max-w-3xl"
+                initial={{ opacity: 0, y: 25 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1 }}
+            >
+                <Gamepad2 className="mx-auto text-[#00E0FF] mb-4" size={48} />
+                <h1 className="text-4xl md:text-6xl font-bold text-white font-['Bebas Neue'] tracking-wide mb-3">
+                    ENTER THE 4-3-3 GAMING WORLD
+                </h1>
+                <p className="text-[#A5A9B8] text-base md:text-lg mb-8 max-w-2xl mx-auto">
+                    Discover the hottest games — online or offline. Explore, compete, and connect with players worldwide.
+                </p>
+                <a
+                    href="#featured"
+                    className="inline-block px-6 py-3 bg-gradient-to-r from-[#0077FF] to-[#00E0FF] text-white rounded-xl font-semibold hover:shadow-[0_0_25px_#00E0FF70] transition"
+                >
+                    Browse Games
+                </a>
+            </motion.div>
+        </section>
+    );
 };

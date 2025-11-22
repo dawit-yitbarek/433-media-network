@@ -36,7 +36,7 @@ app.use('/api/games', gameRoutes);
 app.use('/api/trending', trendingRoutes);
 app.use('/api/admin', adminRoutes);
 
-// Add a health check endpoint to confirm backend is running
+// health check endpoint to confirm backend is running
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });

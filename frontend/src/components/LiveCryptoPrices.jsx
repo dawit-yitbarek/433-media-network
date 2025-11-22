@@ -53,7 +53,7 @@ const LiveCryptoPrices = () => {
         fetchPrices();
     }, []);
 
-    // ✅ Handle search: check local first, then fetch from API if not found
+    // Handle search: check local first, then fetch from API if not found
     const handleSearch = async (e) => {
         e.preventDefault();
         setError("");
@@ -72,7 +72,7 @@ const LiveCryptoPrices = () => {
             return;
         }
 
-        // Not in local cache → fetch from CoinGecko
+        // fetch from CoinGecko
         setLoading(true);
         try {
             const url = `https://api.coingecko.com/api/v3/simple/price?vs_currencies=usd&symbols=${query}&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`;

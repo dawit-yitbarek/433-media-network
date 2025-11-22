@@ -214,7 +214,7 @@ const AdminDashboard = () => {
         </AnimatePresence>
 
 
-        {/* 🔐 Field Access Request Section */}
+        {/* Field Access Request Section */}
         {unassignedFields.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -266,7 +266,7 @@ const AdminDashboard = () => {
   );
 };
 
-/* ---------------- REUSABLE COMPONENTS ---------------- */
+/* Reusable components */
 
 const PostForm = ({ type, activeTab, postData, handleChange, handleSubmit, loading, message }) => (
   <form onSubmit={(e) => handleSubmit(e, activeTab)} className="space-y-4">

@@ -3,8 +3,7 @@ import pool from "../config/db.js"
 dotenv.config();
 
 export async function getGames(req, res) {
-    const { limit = 9, offset = 0 } = req.query; // default 9 posts per fetch
-
+    const { limit = 9, offset = 0 } = req.query;
     try {
         const games = await pool.query(
             `
@@ -23,7 +22,7 @@ export async function getGames(req, res) {
       `,
             [limit, offset]
         );
-        
+
         res.status(200).json({ games: games.rows });
     } catch (error) {
         console.error("Error fetching games:", error.message);

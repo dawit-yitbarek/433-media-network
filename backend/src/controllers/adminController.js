@@ -9,19 +9,18 @@ export const registerAdmin = async (req, res) => {
   try {
     const { name, email, password, fieldPasswords } = req.body;
 
-    // 1️⃣ Basic validation
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required." });
     }
 
 
-    // 2️⃣ Check if admin already exists
+    // Check if admin already exists
     const existingAdmin = await pool.query("SELECT id FROM admins WHERE email = $1", [email]);
     if (existingAdmin.rows.length > 0) {
       return res.status(400).json({ message: "An admin with this email already exists." });
     }
 
-    // 3️⃣ Verify field access keys
+    // Verify field access keys
     const fieldKeys = {
       sport: process.env.SPORT_KEY,
       forex: process.env.FOREX_KEY,
@@ -45,10 +44,9 @@ export const registerAdmin = async (req, res) => {
       grantedFields.push(field);
     }
 
-    // 4️⃣ Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 5️⃣ Save admin to DB
+    // Save admin to DB
     const result = await pool.query(
       `
       INSERT INTO admins (name, email, password, fields)
@@ -60,14 +58,14 @@ export const registerAdmin = async (req, res) => {
 
     const admin = result.rows[0];
 
-    // 6️⃣ Create JWT
+    // Create JWT
     const token = jwt.sign(
       { id: admin.id, email: admin.email, name: admin.name, fields: admin.fields },
       JWT_SECRET,
       { expiresIn: "30d" }
     );
 
-    // 7️⃣ Send response
+
     res.status(201).json({
       message: "Admin registered successfully.",
       admin,
@@ -84,7 +82,6 @@ export const signinAdmin = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Check if admin exists
     const { rows } = await pool.query("SELECT * FROM admins WHERE email = $1", [email]);
     if (rows.length === 0) {
       return res.status(404).json({ message: "Admin with this email not found." });
@@ -92,13 +89,11 @@ export const signinAdmin = async (req, res) => {
 
     const admin = rows[0];
 
-    // Compare password
     const isMatch = await bcrypt.compare(password, admin.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid password. Please try again." });
     }
 
-    // Create JWT token
     const token = jwt.sign(
       {
         id: admin.id,
@@ -110,7 +105,6 @@ export const signinAdmin = async (req, res) => {
       { expiresIn: "5h" }
     );
 
-    // Send response
     res.status(200).json({
       message: "Signin successful!",
       token,
@@ -136,18 +130,18 @@ export const requestFieldAccess = async (req, res) => {
     if (!admin_id || !field || !access_key)
       return res.status(400).json({ message: "Missing required fields." });
 
-    // 1️⃣ Check if admin exists
+    // Check if admin exists
     const adminRes = await pool.query("SELECT id, fields FROM admins WHERE id = $1", [admin_id]);
     if (adminRes.rows.length === 0)
       return res.status(404).json({ message: "Admin not found." });
 
     const admin = adminRes.rows[0];
 
-    // 2️⃣ Check if field already granted
+    // Check if field already granted
     if (admin.fields.includes(field))
       return res.status(400).json({ message: `${field.toUpperCase()} already granted.` });
 
-    // 3️⃣ Verify the access key
+    // Verify the access key
     const fieldKeys = {
       sport: process.env.SPORT_KEY,
       forex: process.env.FOREX_KEY,
@@ -164,7 +158,7 @@ export const requestFieldAccess = async (req, res) => {
     if (access_key.trim() !== expectedKey)
       return res.status(403).json({ message: `Invalid access key for ${field}.` });
 
-    // 4️⃣ Update admin fields array
+    // Update admin fields array
     const updatedFields = [...admin.fields, field];
     await pool.query("UPDATE admins SET fields = $1 WHERE id = $2", [updatedFields, admin_id]);
 

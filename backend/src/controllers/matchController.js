@@ -12,7 +12,6 @@ export async function getMatches(req, res) {
   try {
     let url = "https://api.football-data.org/v4/matches?competitions=PL,FL1,SA,PD,BL1,CL";
 
-    // Add date filters only if it's not today
     if (selectedDate !== today) {
       url += `&dateFrom=${selectedDate}&dateTo=${nextDay}`;
     }

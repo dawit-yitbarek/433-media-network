@@ -5,57 +5,56 @@ import { FilmsLoading } from "./LoadingComponent";
 import { PostsError } from "./ErrorComponent";
 import { EmptyPostCard } from "./EmptyState";
 const BackEndUrl = import.meta.env.VITE_BACKEND_URL;
-const FrontEndUrl = import.meta.env.VITE_FRONTEND_URL;
 
-export default function FilmCard({setFeaturedFilms, setLoading, setError}) {
-  const [films, setFilms] = useState([])
-  const [fetchingFilms, setFetchingFilms] = useState(false)
-  const [filmsError, setFilmsError] = useState('')
-  const [offset, setOffset] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
-  const limit = 20; // how many films to fetch per request ;
-  
-  const fetchFilms = async (append = false) => {
-  setFetchingFilms(true);
-  setLoading(true)
-  setFilmsError("");
-  setError(false)
+export default function FilmCard({ setFeaturedFilms, setLoading, setError }) {
+    const [films, setFilms] = useState([])
+    const [fetchingFilms, setFetchingFilms] = useState(false)
+    const [filmsError, setFilmsError] = useState('')
+    const [offset, setOffset] = useState(0);
+    const [hasMore, setHasMore] = useState(true);
+    const limit = 20; // how many films to fetch per request ;
 
-  try {
-    const currentOffset = append ? offset : 0;
+    const fetchFilms = async (append = false) => {
+        setFetchingFilms(true);
+        setLoading(true)
+        setFilmsError("");
+        setError(false)
 
-    const res = await publicApi.get(`${BackEndUrl}/api/films`, {
-      params: { limit, offset: currentOffset },
-    });
+        try {
+            const currentOffset = append ? offset : 0;
 
-    const newFilms = res?.data.films;
+            const res = await publicApi.get(`${BackEndUrl}/api/films`, {
+                params: { limit, offset: currentOffset },
+            });
 
-    if (newFilms.length < limit) setHasMore(false);
+            const newFilms = res?.data.films;
 
-    // Only increment offset if we successfully fetched something
-    if (newFilms.length > 0) {
-      setOffset((prev) => prev + limit);
-    }
+            if (newFilms.length < limit) setHasMore(false);
 
-    setFilms((prev) => {
-      const updatedFilms = append ? [...prev, ...newFilms] : newFilms;
-      setFeaturedFilms(updatedFilms.slice(0, 10));
-      return updatedFilms;
-    });
-  } catch (error) {
-    console.log("Error fetching films:", error);
-    setFilmsError(
-      films.length === 0
-        ? "Failed to load films. Please try again."
-        : "Failed to load more films. Please try again."
-    );
-    setError(true)
-  } finally {
-    setFetchingFilms(false);
-    setLoading(false)
-  }
-};
-      // Initial fetch
+            // Only increment offset if we successfully fetched something
+            if (newFilms.length > 0) {
+                setOffset((prev) => prev + limit);
+            }
+
+            setFilms((prev) => {
+                const updatedFilms = append ? [...prev, ...newFilms] : newFilms;
+                setFeaturedFilms(updatedFilms.slice(0, 10));
+                return updatedFilms;
+            });
+        } catch (error) {
+            console.log("Error fetching films:", error);
+            setFilmsError(
+                films.length === 0
+                    ? "Failed to load films. Please try again."
+                    : "Failed to load more films. Please try again."
+            );
+            setError(true)
+        } finally {
+            setFetchingFilms(false);
+            setLoading(false)
+        }
+    };
+    // Initial fetch
     useEffect(() => {
         setOffset(0);
         setHasMore(true);
@@ -67,8 +66,8 @@ export default function FilmCard({setFeaturedFilms, setLoading, setError}) {
         fetchFilms(append);
     };
 
-  
-  
+
+
     return (
         <section className="py-20 px-6 md:px-12 bg-gradient-to-b from-[#0A0F1C] via-[#10192E] to-[#1C2541] text-[#EAEAEA]">
             {/* Header */}
@@ -117,23 +116,23 @@ export default function FilmCard({setFeaturedFilms, setLoading, setError}) {
                     </div>
                 ))}
             </div>
-            
+
             {fetchingFilms && (
-              <FilmsLoading />
+                <FilmsLoading />
             )}
-            
+
             {filmsError && !fetchingFilms && (
-              <PostsError 
-                message={filmsError}
-                onRetry={handleLoadMore}
-              />
+                <PostsError
+                    message={filmsError}
+                    onRetry={handleLoadMore}
+                />
             )}
-            
+
             {films?.length === 0 && !fetchingFilms && !filmsError && (
                 <EmptyPostCard category={"More Films"} />
             )}
-            
-            
+
+
             {hasMore && films.length > 0 && !fetchingFilms && !filmsError && (
                 <div className="flex justify-center mt-10">
                     <button

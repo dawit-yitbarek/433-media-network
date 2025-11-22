@@ -42,7 +42,7 @@ const CryptoPage = () => {
                 <PostCard category="crypto" />
             </section>
 
-            {/* 💡 Learn About Crypto Section */}
+            {/* Learn About Crypto Section */}
             <section className="py-24 px-4 md:px-12 bg-gradient-to-b from-[#0A0F1C] to-[#121D36] text-[#EAEAEA] relative overflow-hidden">
                 {/* Subtle Background Effects */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,224,255,0.1),transparent_70%)]"></div>

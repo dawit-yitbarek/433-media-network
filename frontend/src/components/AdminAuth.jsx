@@ -4,7 +4,7 @@ import { Lock, User, Mail, Eye, EyeOff, Loader2 } from "lucide-react";
 import { publicApi } from "./Api";
 const BackEndUrl = import.meta.env.VITE_BACKEND_URL;
 
-// ---------------- Reusable Input Field ----------------
+// Reusable Input Field
 const InputField = ({ icon: Icon, type, name, placeholder, value, onChange, showToggle, showPassword, setShowPassword, required }) => (
   <div className="flex items-center gap-3 bg-[#0A0F1C] rounded-xl px-4 py-3 border border-[#1C2541] focus-within:border-[#00E0FF]">
     {Icon && <Icon size={18} className="text-[#00E0FF]" />}
@@ -25,7 +25,7 @@ const InputField = ({ icon: Icon, type, name, placeholder, value, onChange, show
   </div>
 );
 
-// ---------------- SignIn Form ----------------
+// Reusable SignIn Form
 const SignInForm = ({ formData, handleChange, handleSubmit, showPassword, setShowPassword, loading }) => (
   <motion.form
     key="signin"
@@ -59,7 +59,7 @@ const SignInForm = ({ formData, handleChange, handleSubmit, showPassword, setSho
   </motion.form>
 );
 
-// ---------------- SignUp Form ----------------
+// Reusable SignUp Form
 const SignUpForm = ({
   formData,
   handleChange,
@@ -138,7 +138,7 @@ const SignUpForm = ({
   );
 };
 
-// ---------------- Main Component ----------------
+
 const AdminAuth = () => {
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setShowPassword] = useState(false);

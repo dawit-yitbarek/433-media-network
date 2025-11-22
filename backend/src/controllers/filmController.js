@@ -3,7 +3,7 @@ import pool from "../config/db.js"
 dotenv.config();
 
 export async function getFilms(req, res) {
-    const { limit = 9, offset = 0 } = req.query; // default 9 posts per fetch
+    const { limit = 9, offset = 0 } = req.query;
 
     try {
         const films = await pool.query(

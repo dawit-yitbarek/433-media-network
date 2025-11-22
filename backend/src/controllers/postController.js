@@ -3,7 +3,7 @@ import pool from "../config/db.js"
 dotenv.config();
 
 export async function getPosts(req, res) {
-  const { category, limit = 9, offset = 0 } = req.query; // default 9 posts per fetch
+  const { category, limit = 9, offset = 0 } = req.query;
 
   try {
     const posts = await pool.query(
@@ -117,7 +117,7 @@ export const addGeneralPost = async (req, res) => {
 };
 
 
-// 🎬 Add Film
+// Add Film
 export const addFilm = async (req, res) => {
   const { title, genre, rating, image_url, link, admin_id } = req.body;
 
@@ -126,8 +126,6 @@ export const addFilm = async (req, res) => {
   }
 
   try {
-    // Convert genre to array (if comma-separated)
-
     const query = `
       INSERT INTO films (title, genre, rating, poster_url, telegram_link, admin_id, created_at)
       VALUES ($1, $2, $3, $4, $5, $6, NOW())
@@ -142,7 +140,7 @@ export const addFilm = async (req, res) => {
 };
 
 
-//🎮 Add Game
+// Add Game
 export const addGame = async (req, res) => {
   const { title, badges, image_url, link, admin_id } = req.body;
 
@@ -151,8 +149,6 @@ export const addGame = async (req, res) => {
   }
 
   try {
-    // Convert badges to array if comma-separated
-
     const query = `
       INSERT INTO games (title, badges, image_url, link, admin_id, created_at)
       VALUES ($1, $2, $3, $4, $5, NOW())

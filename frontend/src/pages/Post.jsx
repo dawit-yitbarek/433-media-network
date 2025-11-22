@@ -14,7 +14,6 @@ import {
 import { PostsError } from "../components/ErrorComponent";
 import PostNotFound from "../components/PostNotFound";
 import SEOHead from "../components/SeoHead.jsx";
-const FrontendUrl = import.meta.env.VITE_FRONTEND_URL;
 const BackEndUrl = import.meta.env.VITE_BACKEND_URL;
 
 const categoryStyles = {
@@ -72,7 +71,7 @@ const PostPage = () => {
         fetchPost();
     }, [id, refreshKey]);
 
-    // 🧩 Conditional rendering logic:
+    // Conditional rendering logic:
     if (loading) {
         return (
             <div className="flex justify-center items-center h-screen bg-[#0A0F1C]">
@@ -96,7 +95,7 @@ const PostPage = () => {
         return <PostNotFound />;
     }
 
-    // ✅ Continue normal rendering only when post is available
+    // normal rendering when post is available
     const category =
         (post?.category || "news").toLowerCase().trim() in categoryStyles
             ? post?.category.toLowerCase().trim()

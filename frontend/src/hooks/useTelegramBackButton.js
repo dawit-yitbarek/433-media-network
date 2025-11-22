@@ -9,7 +9,7 @@ export const useTelegramBackButton = () => {
   useEffect(() => {
     if (!backButton?.isSupported()) return;
 
-    // Mount & show back button safely
+    // Mount & show back button
     if (backButton.mount?.isAvailable()) backButton.mount();
     if (backButton.show?.isAvailable()) backButton.show();
 
@@ -17,7 +17,7 @@ export const useTelegramBackButton = () => {
       if (location.pathname !== '/') {
         navigate(-1);
       } else {
-        // optional: hide back button on home
+        // hide back button on home
         if (backButton.hide?.isAvailable()) backButton.hide();
       }
     };
@@ -27,7 +27,7 @@ export const useTelegramBackButton = () => {
       offClick = onBackButtonClick(handleBack);
     }
 
-    // Cleanup function (always returned)
+    // Cleanup function
     return () => {
       if (typeof offClick === 'function') offClick();
       if (backButton.unmount?.isAvailable()) backButton.unmount();

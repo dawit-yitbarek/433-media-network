@@ -13,7 +13,6 @@ const ForexRateSection = () => {
     const [lastUpdated, setLastUpdated] = useState(null);
     const [previousRates, setPreviousRates] = useState({});
 
-    // ✅ Main currencies to display
     const mainCurrencies = ["EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "NZD"];
 
     const fetchRates = async () => {
@@ -24,7 +23,7 @@ const ForexRateSection = () => {
             const response = await axios.get(forexRateApi);
             const data = response.data?.rates || {};
 
-            // ✅ Filter only main currencies
+            // Filter only main currencies
             const filteredRates = Object.entries(data)
                 .filter(([symbol]) => mainCurrencies.includes(symbol))
                 .map(([symbol, value]) => {
@@ -116,7 +115,7 @@ const ForexRateSection = () => {
                                 <span className="text-2xl font-bold text-[#00E0FF]">
                                     {r.price.toFixed(4)}
                                 </span>
-                                
+
                             </div>
                         </div>
                     ))}

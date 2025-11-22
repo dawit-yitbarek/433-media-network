@@ -1,4 +1,3 @@
-// Footer.jsx
 import { Mail, MessageSquare } from "lucide-react";
 import {
     FaTelegramPlane,

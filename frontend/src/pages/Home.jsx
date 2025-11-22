@@ -12,7 +12,7 @@ const Home = () => {
   const isTelegram = typeof window !== "undefined" && window.Telegram?.WebApp;
 
   useEffect(() => {
-    // 🚫 skip everything in Telegram WebView
+    // skip in Telegram WebView
     if (isTelegram) return;
 
     if (location.hash) {

@@ -65,7 +65,7 @@ const MatchTable = ({ leagues }) => {
     } else {
       setHeight("auto");
     }
-    // also recalc on window resize (cleanup added)
+    // also recalc on window resize
     const onResize = () => {
       const el2 = slideRefs.current[currentIndex];
       if (el2) {
@@ -82,7 +82,7 @@ const MatchTable = ({ leagues }) => {
       className="relative w-full overflow-hidden transition-[height] duration-500 ease-in-out"
       style={{ height }}
     >
-      {/* Slider - NOTE items-start prevents children being stretched to the tallest */}
+
       <div
         className="flex items-start transition-transform duration-700 ease-in-out"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -91,7 +91,6 @@ const MatchTable = ({ leagues }) => {
           <div
             key={index}
             ref={(el) => (slideRefs.current[index] = el)}
-            // self-start ensures this slide isn't stretched by flex cross-axis
             className="min-w-full flex-shrink-0 flex flex-col items-center self-start"
           >
             {/* League Header */}
@@ -121,9 +120,8 @@ const MatchTable = ({ leagues }) => {
                   {league.matches?.map((match) => (
                     <tr
                       key={match.id}
-                      className={`hover:bg-[#1C2541]/40 transition ${
-                        match.status === "LIVE" ? "border-l-4 border-[#00E0FF]" : ""
-                      }`}
+                      className={`hover:bg-[#1C2541]/40 transition ${match.status === "LIVE" ? "border-l-4 border-[#00E0FF]" : ""
+                        }`}
                     >
                       <td className="py-4 text-right w-2/5 align-middle">
                         <div className="flex flex-col sm:flex-row sm:gap-2 justify-end items-center">
@@ -176,9 +174,8 @@ const MatchTable = ({ leagues }) => {
               {leagues.map((_, i) => (
                 <span
                   key={i}
-                  className={`w-3 h-3 rounded-full transition-all ${
-                    i === currentIndex ? "bg-[#00E0FF]" : "bg-[#1C2541] hover:bg-[#00E0FF]/40 border border-[#00E0FF]/40"
-                  }`}
+                  className={`w-3 h-3 rounded-full transition-all ${i === currentIndex ? "bg-[#00E0FF]" : "bg-[#1C2541] hover:bg-[#00E0FF]/40 border border-[#00E0FF]/40"
+                    }`}
                 />
               ))}
             </div>

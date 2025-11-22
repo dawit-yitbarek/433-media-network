@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { publicApi } from "./Api";
-import PostCard from "./PostCard";
 import { TrendingPost, TrendingFilms, TrendingGames } from "./TrendingCard";
-import { Star } from "lucide-react";
 import { PostsLoading } from "./LoadingComponent";
 import { PostsError } from "./ErrorComponent";
 
@@ -48,11 +46,10 @@ const Trending = () => {
                         <button
                             key={s}
                             onClick={() => setActive(s)}
-                            className={`px-4 py-2 rounded-lg text-sm md:text-base transition ${
-                                active === s
+                            className={`px-4 py-2 rounded-lg text-sm md:text-base transition ${active === s
                                     ? "bg-gradient-to-r from-[#0077FF] to-[#00E0FF] text-white"
                                     : "bg-[#1C2541] text-[#A5A9B8] hover:text-white border border-[#00E0FF]"
-                            }`}
+                                }`}
                         >
                             {s}
                         </button>
@@ -74,7 +71,7 @@ const Trending = () => {
                 )}
             </div>
 
-            {loading && <PostsLoading count={3}/>}
+            {loading && <PostsLoading count={3} />}
 
             {!loading && error && (
                 <PostsError message={error} onRetry={fetchTrendingPosts} />

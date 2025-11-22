@@ -11,7 +11,7 @@ const AdminPage = () => {
     if (storedAdmin) {
       setAdmin(JSON.parse(storedAdmin));
     }
-    setLoading(false); // ✅ finished checking
+    setLoading(false);
   }, []);
 
   if (loading) {

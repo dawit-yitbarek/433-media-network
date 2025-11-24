@@ -65,9 +65,13 @@ Clean modern UI
 ### 📁 Project Structure
 433-media-network/
 │
-├── backend/              # Node.js + Express API
-│   ├── routes/
-│   ├── controllers/
+├── backend/
+|   |src/           # Node.js + Express API
+│   |  ├── routes/
+│   │  |── middleware/
+│   │  |── config/
+│   │  |── models/
+|   |  └── controllers/
 │   ├── server.js
 │   └── package.json
 │
@@ -164,36 +168,125 @@ CREATE TABLE IF NOT EXISTS public.games (
 
 ### ⚙️ Environment Variables
 Backend (/backend/.env)
-FOOTBALL_API_KEY = Football match data API key
-FRONTEND_URL = Frontend URL
-BACKEND_URL = API base URL
-DATABASE_URL = PostgreSQL connection URL
-JWT_SECRET = JWT Token secret
-SPORT_KEY =  Admin access key for football category
-FOREX_KEY = Admin access key for forex category
-CRYPTO_KEY = Admin access key for crypto category
-NEWS_KEY = Admin access key for news category
-FILM_KEY = Admin access key for film category
-GAME_KEY = Admin access key for game category
-PORT = Backend server port
+ # 433 Media Network
 
-Frontend (/frontend/.env)
-VITE_BACKEND_URL = Backend API URL
-VITE_FRONTEND_URL = Frontend base URL
-VITE_FOREX_RATE_API = External API for forex rate fetch
+ A multi-category media platform (sports/matches, films, games, crypto, forex and news) with a React + Vite frontend and an Express/Postgres backend. The project includes a JWT-based admin system, media uploads (Cloudinary), and REST API endpoints for posts, matches, films, games and trending content.
 
-### 🧪 Installation & Setup
-Backend
-cd backend
-npm install
-node server.js
+ **This README** documents how to run the project locally, required environment variables, project layout and useful endpoints.
 
-Frontend
-cd frontend
-npm install
-npm run dev
+ **Quick Links**
+ - **Backend:** `./backend`
+ - **Frontend:** `./frontend`
 
+ **Recommended versions:** Node.js 16+ and npm 8+ (or newer).
 
-🌐 Deployment
-Frontend is live at:
-https://433-media-network.vercel.app/
+ ## Getting Started (local development)
+
+ - **Backend**
+     - Install dependencies and run in development:
+         ```powershell
+         cd backend
+         npm install
+         npm run dev    # uses nodemon to restart on changes
+         ```
+     - Production start:
+         ```powershell
+         npm start
+         ```
+
+ - **Frontend**
+     - Install dependencies and start dev server:
+         ```powershell
+         cd frontend
+         npm install
+         npm run dev
+         ```
+     - Build for production:
+         ```powershell
+         npm run build
+         npm run preview   # preview built assets
+         ```
+
+ - Run both: open two terminals and start backend and frontend separately.
+
+ ## Environment variables
+ Place backend variables in `backend/.env` and frontend ones in `frontend/.env` (Vite requires `VITE_` prefix for variables exposed to the browser).
+
+ - Backend (examples)
+     - `PORT` - port for the backend server (e.g. `4000`)
+     - `FRONTEND_URL` - allowed origin for CORS (e.g. `http://localhost:5173`)
+     - `DATABASE_URL` - PostgreSQL connection string
+     - `JWT_SECRET` - secret used to sign JWT tokens
+     - `SPORT_KEY`, `FOREX_KEY`, `CRYPTO_KEY`, `NEWS_KEY`, `FILM_KEY`, `GAME_KEY` - admin category keys
+     - `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` - Cloudinary credentials
+
+     Example `backend/.env` (DO NOT commit this file):
+     ```env
+     PORT=4000
+     FRONTEND_URL=http://localhost:5173
+     DATABASE_URL=postgres://user:pass@host:5432/dbname
+     JWT_SECRET=your_jwt_secret_here
+     SPORT_KEY=sport1234
+     FOREX_KEY=forex1234
+     CRYPTO_KEY=crypto1234
+     NEWS_KEY=news1234
+     FILM_KEY=film1234
+     GAME_KEY=game1234
+     CLOUDINARY_CLOUD_NAME=your_cloud_name
+     CLOUDINARY_API_KEY=your_api_key
+     CLOUDINARY_API_SECRET=your_api_secret
+     ```
+
+ - Frontend (examples in `frontend/.env`)
+     - `VITE_BACKEND_URL` - backend base URL (e.g. `http://localhost:4000`)
+     - `VITE_FRONTEND_URL` - frontend base URL (optional)
+
+     Example `frontend/.env`:
+     ```env
+     VITE_BACKEND_URL=http://localhost:4000
+     ```
+
+ ## Project structure (important folders)
+
+ - `backend/` — Express API
+     - `server.js` — app entry
+     - `src/routes/` — route definitions (`/api/posts`, `/api/matches`, `/api/films`, `/api/games`, `/api/trending`, `/api/upload`, `/api/admin`)
+     - `src/controllers/` — request handlers
+     - `src/config/db.js` — Postgres pool (uses `DATABASE_URL`)
+     - `src/models/cloudinary.js` — Cloudinary configuration (uses `CLOUDINARY_*` env vars)
+
+ - `frontend/` — React + Vite app
+     - `src/` — components and pages
+     - `public/` — static assets
+     - `package.json` — scripts: `dev`, `build`, `preview`
+
+ ## Notable API endpoints
+ - `GET /health` — health check (returns `OK`)
+ - `POST/GET/PUT/DELETE /api/posts` — posts CRUD
+ - `GET /api/matches` — matches
+ - `POST /api/upload` — file uploads (uses Cloudinary)
+ - `POST /api/admin` — admin auth and admin-related operations
+
+ Check route files in `backend/src/routes/` for full list and request contracts.
+
+ ## Database
+ This project expects a PostgreSQL database. `backend/src/config/db.js` uses `process.env.DATABASE_URL`. Create the database and provide the connection string in the `.env` file.
+
+ ## Deploying
+ - Frontend is friendly for deployment on Vercel (project already includes `vercel.json`).
+ - Backend can be deployed to platforms that support Node + Postgres (Heroku, Railway, Render, Fly.io, etc.). Ensure `DATABASE_URL` and Cloudinary env vars are set in the target environment.
+
+ ## Useful commands summary
+ ```powershell
+ # Backend
+ cd backend
+ npm install
+ npm run dev    # development
+ npm start      # production
+
+ # Frontend
+ cd frontend
+ npm install
+ npm run dev
+ npm run build
+ ```
